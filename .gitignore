@@ -28,3 +28,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# hack to use IDEs autocomplete
+# https://github.com/tailwindcss/tailwindcss/issues/1844
+.tailwind.css
