@@ -1,20 +1,24 @@
 import React from "react";
 import cx from "clsx";
 
-type TypographyVariant =
-  | "headline"
-  | "title1"
-  | "title2"
-  | "subtitle1"
-  | "subtitle2"
-  | "body1"
-  | "body2"
-  | "body3"
-  | "button"
-  | "caption"
-  | "overline";
+const TYPOGRAPHY_VARIANTS = [
+  "headline",
+  "title1",
+  "title2",
+  "subtitle1",
+  "subtitle2",
+  "body1",
+  "body2",
+  "body3",
+  "button",
+  "caption",
+  "overline",
+] as const;
 
-type TypographyWeight = "normal" | "semibold" | "bold";
+const TYPOGRAPHY_WEIGHTS = ["normal", "semibold", "bold"] as const;
+
+type TypographyVariant = typeof TYPOGRAPHY_VARIANTS[number];
+type TypographyWeight = typeof TYPOGRAPHY_WEIGHTS[number];
 
 interface TypographyProps {
   component?: string;
@@ -54,20 +58,19 @@ const variantToElement: Record<TypographyVariant, string> = {
   overline: "span",
 };
 
-const fontWeight: Record<TypographyWeight, TypographyWeight> = {
-  normal: "normal",
-  bold: "bold",
-  semibold: "semibold",
-};
+const fontWeight = TYPOGRAPHY_WEIGHTS.reduce(
+  (acc, curr) => ({ ...acc, [curr]: curr }),
+  {} as Record<TypographyWeight, TypographyWeight>
+);
 
 const textTransformationVariants = {
   button: {
-    uppercase: true
+    uppercase: true,
   },
   overline: {
-    uppercase: true
-  }
-}
+    uppercase: true,
+  },
+};
 
 // Default font weight by variant name
 const fontWeightVariants: Record<TypographyVariant, TypographyWeight> = {
@@ -100,9 +103,9 @@ const getFontWeightClass = (
 
 export const Typography: React.FC<TypographyProps> = ({
   component,
-  className = "",
-  variant = "body1",
-  color = "text-primary-black",
+  className,
+  variant,
+  color,
   children,
   weight,
   underline = false,
@@ -116,7 +119,10 @@ export const Typography: React.FC<TypographyProps> = ({
   };
 
   const textTransform = {
-    uppercase: uppercase !== undefined ? uppercase : textTransformationVariants[variant]?.uppercase
+    uppercase:
+      uppercase !== undefined
+        ? uppercase
+        : textTransformationVariants[variant]?.uppercase,
   };
 
   const cssClasses = cx(
@@ -135,3 +141,9 @@ export const Typography: React.FC<TypographyProps> = ({
     children
   );
 };
+
+Typography.defaultProps = {
+  className: "",
+  variant: "body1",
+  color: "text-primary-black",
+}

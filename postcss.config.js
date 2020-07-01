@@ -1,17 +1,5 @@
-const plugins = [
-  "tailwindcss",
-  "postcss-flexbugs-fixes",
-  [
-    "postcss-preset-env",
-    {
-      autoprefixer: {
-        flexbox: "no-2009",
-      },
-      stage: 3,
-    },
-  ],
-];
+const configPath = `${__dirname}/tailwind.config.js`
 
-module.exports = {
-  plugins,
-};
+module.exports = () => ({
+  plugins: [require("tailwindcss")(configPath)],
+})
